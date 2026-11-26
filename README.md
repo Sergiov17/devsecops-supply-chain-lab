@@ -56,12 +56,13 @@ Use the digest emitted by the publish job. Do not verify against a mutable tag.
 - The pull-request job is read-only and does not receive an OIDC signing token.
 - Only the main-branch publish job gets package-write and OIDC permissions.
 - The workflow uses GitHub Actions' short-lived token; no long-lived cloud or signing secret is stored.
+- The Dockerfile refreshes Debian packages during each build to pick up security fixes. This makes builds date-sensitive; pin base-image digests and promote reviewed images by digest in production.
 - This is a learning example. Pin third-party Actions to reviewed commit SHAs before using the pattern in a production organization.
 
 ## Repository layout
 
 - `app/main.py`: dependency-free HTTP service with a health endpoint
-- `app/Dockerfile`: minimal non-root runtime image
+- `app/Dockerfile`: non-root runtime image with refreshed OS packages
 - `.github/workflows/secure-build.yml`: build, scan, publish, attest, sign
 
 ## License
